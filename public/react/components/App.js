@@ -8,6 +8,7 @@ import ProductList from "./ProductList";
 
 export const App = () => {
   const [sauces, setSauces] = useState([]);
+  const [products, setProducts] = useState([]);
 
   async function fetchSauces() {
     try {
@@ -20,8 +21,21 @@ export const App = () => {
     }
   }
 
-  useEffect(() => {
-    // fetchSauces();
+	const fetchProducts = async () => {
+
+		try{
+		  const response = await fetch(`http://localhost:3000/api/item/`)
+		  const data = await response.json()
+		  console.log(data)
+		  setProducts(data)
+		}catch(err){
+		  console.log(err)
+		}
+	  };
+	
+	  useEffect(()=>{
+	
+		fetchProducts()
   }, []);
 
   return (
@@ -37,7 +51,7 @@ export const App = () => {
           alignItems: "center",
         }}
       >
-        <ProductList />
+        <ProductList products={products}/>
       </div>
     </main>
   );

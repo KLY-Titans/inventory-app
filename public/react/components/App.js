@@ -21,7 +21,7 @@ export const App = () => {
   }
 
   useEffect(() => {
-    fetchSauces();
+    // fetchSauces();
   }, []);
 
   return (

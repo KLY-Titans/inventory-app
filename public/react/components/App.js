@@ -1,33 +1,44 @@
-import React, { useState, useEffect } from 'react';
-import { SaucesList } from './SaucesList';
+import React, { useState, useEffect } from "react";
+import { SaucesList } from "./SaucesList";
 
 // import and prepend the api url to any fetch calls
-import apiURL from '../api';
+import apiURL from "../api";
+import ProductCard from "./ProductCard";
+import ProductList from "./ProductList";
 
 export const App = () => {
+  const [sauces, setSauces] = useState([]);
 
-	const [sauces, setSauces] = useState([]);
+  async function fetchSauces() {
+    try {
+      const response = await fetch(`${apiURL}/sauces`);
+      const saucesData = await response.json();
 
-	async function fetchSauces(){
-		try {
-			const response = await fetch(`${apiURL}/sauces`);
-			const saucesData = await response.json();
-			
-			setSauces(saucesData);
-		} catch (err) {
-			console.log("Oh no an error! ", err)
-		}
-	}
+      setSauces(saucesData);
+    } catch (err) {
+      console.log("Oh no an error! ", err);
+    }
+  }
 
-	useEffect(() => {
-		fetchSauces();
-	}, []);
+  useEffect(() => {
+    fetchSauces();
+  }, []);
 
-	return (
-		<main>	
+  return (
+    <main>
       <h1>Sauce Store</h1>
-			<h2>All things 🔥</h2>
-			<SaucesList sauces={sauces} />
-		</main>
-	)
-}
+      <h2>All things 🔥</h2>
+      {/* <SaucesList sauces={sauces} /> */}
+
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <ProductList />
+      </div>
+    </main>
+  );
+};

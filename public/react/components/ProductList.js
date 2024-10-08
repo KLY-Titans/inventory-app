@@ -9,7 +9,7 @@ const ProductList = ({ products, onProductClick}) => {
         <ProductCard
           key={product.id}
           product={product}
-          onClick={() => onProductClick(product)}
+          onClick={() => onProductClick(product.id)}
         />
       ))}
     </Grid>

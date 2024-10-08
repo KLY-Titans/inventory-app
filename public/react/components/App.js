@@ -13,7 +13,6 @@ export const App = () => {
     try {
       const response = await fetch(`${apiURL}/item/`);
       const data = await response.json();
-      console.log(data);
       setProducts(data);
     } catch (err) {
       console.log(err);
@@ -24,8 +23,10 @@ export const App = () => {
     fetchProducts();
   }, []);
 
-  const handleProductClick = (product) => {
-    setSelectedProduct(product);
+  const handleProductClick = async (id) => {
+    const res = await fetch(`${apiURL}/item/${id}`);
+    const data = await res.json();
+    setSelectedProduct(data);
   };
 
   return (

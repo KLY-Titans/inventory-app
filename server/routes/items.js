@@ -22,5 +22,37 @@ router.get("/:id", async (req, res, next) => {
     next(error);
   }
 });
+//POST /item/
+router.post("/", async (req, res, next) => {
+	try {
+		const {body} = req
+		const item = await Item.create(body);
+		res.json(item);
+	} catch (error) {
+		next(error);
+	}
+});
+//DELETE /item/:id
+router.delete("/:id", async (req, res, next) => {
+	try {
+		const { id } = req.params;
+		let item = await Item.findByPk(id);
+		item = await item.destroy()
+		res.json(item);
+	} catch (error) {
+		next(error);
+	}
+});
+//UPDATE/PUT /item/
+router.put("/:id", async (req, res, next) => {
+	const { id } = req.params;
+	try {
+		let item = await Item.findByPk(id);
+		item = await item.update(req.body);
+		res.json(item);
+	} catch (error) {
+		next(error);
+	}
+});
 
 module.exports = router;

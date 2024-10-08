@@ -7,12 +7,12 @@ import ProductList from "./ProductList";
 
 export const App = () => {
   const [products, setProducts] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   const fetchProducts = async () => {
     try {
       const response = await fetch(`${apiURL}/item/`);
       const data = await response.json();
-      console.log(data);
       setProducts(data);
     } catch (err) {
       console.log(err);
@@ -23,20 +23,25 @@ export const App = () => {
     fetchProducts();
   }, []);
 
+  const handleProductClick = async (id) => {
+    const res = await fetch(`${apiURL}/item/${id}`);
+    const data = await res.json();
+    setSelectedProduct(data);
+  };
+
   return (
     <main>
       <h1>Titan Store</h1>
       <h2>All things 🔥</h2>
 
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <ProductList products={products} />
-      </div>
+      {selectedProduct ? (
+        <ProductCard
+          product={selectedProduct}
+          goBack={() => setSelectedProduct(null)}
+        />
+      ) : (
+        <ProductList products={products} onProductClick={handleProductClick} />
+      )}
     </main>
   );
 };

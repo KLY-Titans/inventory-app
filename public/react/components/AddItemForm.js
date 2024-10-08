@@ -38,7 +38,7 @@ export const AddItemForm = () => {
     }
 
     return(
-        <form>
+        <form onSubmit={handleSubmit}>
             <div>
                 <label>Product name:</label>
                 <input type="text" value={name} onChange={(e) => setName(e.target.value)} required />

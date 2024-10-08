@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { Item } = require("../models");
-const { check, body, validationResult } = require("express-validator");
+const { check, matchedData, validationResult } = require("express-validator");
 
 // GET /item/ all items
 router.get("/", async (req, res, next) => {
@@ -28,11 +28,11 @@ router.get("/:id", async (req, res, next) => {
 router.post(
 	"/",
 	[
-		check("name").trim().not().isEmpty().isLength(),
-		body("price").trim().not().isEmpty().isLength(),
-		check("description").trim().not().isEmpty().isLength(),
-		check("category").trim().not().isEmpty().isLength(),
-		check("image").trim().not().isEmpty().isLength(),
+		check("name").trim().notEmpty(),
+		check("price").isNumeric(),
+		check("description").trim().notEmpty(),
+		check("category").trim().notEmpty(),
+		check("image").trim().notEmpty(),
 	],
 	async (req, res, next) => {
 		const errors = validationResult(req);
@@ -40,8 +40,8 @@ router.post(
 			return res.status(400).json({ errors: errors.array() });
 		}
 		try {
-			const { body } = req;
-			const item = await Item.create(body);
+			const data = matchedData(req)
+			const item = await Item.create(data);
 			res.status(200).json(item);
 		} catch (error) {
 			next(error);

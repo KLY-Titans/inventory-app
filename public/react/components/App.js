@@ -7,6 +7,7 @@ import ProductList from "./ProductList";
 
 export const App = () => {
   const [products, setProducts] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   const fetchProducts = async () => {
     try {
@@ -23,20 +24,23 @@ export const App = () => {
     fetchProducts();
   }, []);
 
+  const handleProductClick = (product) => {
+    setSelectedProduct(product);
+  };
+
   return (
     <main>
       <h1>Titan Store</h1>
       <h2>All things 🔥</h2>
 
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <ProductList products={products} />
-      </div>
+      {selectedProduct ? (
+        <ProductCard
+          product={selectedProduct}
+          goBack={() => setSelectedProduct(null)}
+        />
+      ) : (
+        <ProductList products={products} onProductClick={handleProductClick} />
+      )}
     </main>
   );
 };

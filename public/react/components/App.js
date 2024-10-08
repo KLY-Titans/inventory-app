@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import apiURL from "../api";
 import ProductCard from "./ProductCard";
 import ProductList from "./ProductList";
+import { AddItemForm } from "./AddItemForm";
 
 export const App = () => {
   const [products, setProducts] = useState([]);
@@ -33,7 +34,7 @@ export const App = () => {
     <main>
       <h1>Titan Store</h1>
       <h2>All things 🔥</h2>
-
+	  <AddItemForm />
       {selectedProduct ? (
         <ProductCard
           product={selectedProduct}

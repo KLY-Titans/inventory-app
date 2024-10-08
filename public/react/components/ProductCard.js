@@ -1,4 +1,5 @@
 import React from "react";
+
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import CardMedia from "@mui/material/CardMedia";
@@ -6,7 +7,25 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 
-const ProductCard = ({ product, onClick, goBack }) => {
+import apiURL from "../api";
+
+const ProductCard = ({ product, onClick, goBack, setOnDelete, onDelete }) => {
+  const deleteHandler = async (id) => {
+    try {
+      const res = await fetch(`${apiURL}/item/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-type": "application/json",
+        },
+      });
+      // sets curr selectedProduct back to null after deleting from the DB
+      goBack();
+      setOnDelete(!onDelete);
+    } catch (error) {
+      console.log(`Error : ${error}`);
+    }
+  };
+
   return (
     <Card
       variant="outlined"
@@ -24,11 +43,10 @@ const ProductCard = ({ product, onClick, goBack }) => {
           ${product.price}
         </Typography>
       </CardContent>{" "}
-      {/* needs conditional rendereing for single view only */}
       {goBack && (
         <>
           <Stack spacing={2} direction="row">
-            <button>DELETE</button>
+            <button onClick={() => deleteHandler(product.id)}>DELETE</button>
             <button>EDIT</button>
             <button onClick={goBack}>Go Back</button>
           </Stack>

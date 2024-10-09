@@ -2,17 +2,28 @@ import React, { useState } from "react";
 import apiURL from "../api";
 import { Box, Typography, Button, TextField } from "@mui/material";
 
-const AddItemForm = ({ onAdd, setOnAdd, setShowForm, showForm }) => {
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
-  const [description, setDescription] = useState("");
-  const [category, setCategory] = useState("");
-  const [image, setImage] = useState("");
+const AddEditForm = ({
+  onAdd,
+  setOnAdd,
+  setShowForm,
+  showForm,
+  onEdit,
+  setOnEdit,
+  setSelectedProduct,
+  product = null,
+}) => {
+  const [name, setName] = useState(product ? product.name : "");
+  const [price, setPrice] = useState(product ? product.price : "");
+  const [description, setDescription] = useState(
+    product ? product.description : ""
+  );
+  const [category, setCategory] = useState(product ? product.category : "");
+  const [image, setImage] = useState(product ? product.image : "");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const newItem = {
+    const item = {
       name,
       price,
       description,
@@ -21,24 +32,42 @@ const AddItemForm = ({ onAdd, setOnAdd, setShowForm, showForm }) => {
     };
 
     try {
-      const response = await fetch(`${apiURL}/item/`, {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify(newItem),
-      });
+      let response;
+
+      if (product) {
+        response = await fetch(`${apiURL}/item/${product.id}`, {
+          method: "PUT",
+          headers: {
+            "Content-type": "application/json",
+          },
+          body: JSON.stringify(item),
+        });
+        const data = await response.json();
+        setSelectedProduct(data);
+        setOnEdit(!onEdit);
+      } else {
+        response = await fetch(`${apiURL}/item/`, {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json",
+          },
+          body: JSON.stringify(item),
+        });
+        setOnAdd(!onAdd);
+      }
       if (response.ok) {
         setName("");
         setPrice("");
         setDescription("");
         setCategory("");
         setImage("");
-        setOnAdd(!onAdd);
+
         setShowForm(!showForm);
-        console.log("Item added successfully");
+        console.log(
+          product ? "Item successfully update" : "Item added successfully"
+        );
       } else {
-        console.log("Failed to add item");
+        console.log(product ? "Failed to update item" : "Failed to add item");
       }
     } catch (err) {
       console.error("Error:", err);
@@ -62,7 +91,7 @@ const AddItemForm = ({ onAdd, setOnAdd, setShowForm, showForm }) => {
       onSubmit={handleSubmit}
     >
       <Typography variant="h5" component="h2" align="center" marginBottom={2}>
-        Add New Item
+        {product ? "Edit Item" : "Add New Item"}
       </Typography>
 
       <TextField
@@ -125,7 +154,7 @@ const AddItemForm = ({ onAdd, setOnAdd, setShowForm, showForm }) => {
         type="submit"
         sx={{ marginBottom: "0.5em" }}
       >
-        Add Item
+        {product ? "Update Item" : "Add Item"}
       </Button>
       <Button
         variant="outlined"
@@ -139,4 +168,4 @@ const AddItemForm = ({ onAdd, setOnAdd, setShowForm, showForm }) => {
   );
 };
 
-export default AddItemForm;
+export default AddEditForm;

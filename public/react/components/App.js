@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import apiURL from "../api";
 import ProductCard from "./ProductCard";
 import ProductList from "./ProductList";
-import AddItemForm from "./AddItemForm";
+import AddEditForm from "./AddEditForm";
 
 import { Button } from "@mui/material";
 
@@ -13,6 +13,7 @@ export const App = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [onDelete, setOnDelete] = useState(false);
   const [onAdd, setOnAdd] = useState(false);
+  const [onEdit, setOnEdit] = useState(false);
   const [showForm, setShowForm] = useState(false);
 
   const fetchProducts = async () => {
@@ -27,7 +28,7 @@ export const App = () => {
 
   useEffect(() => {
     fetchProducts();
-  }, [onDelete, onAdd]);
+  }, [onDelete, onAdd, onEdit]);
 
   const handleProductClick = async (id) => {
     const res = await fetch(`${apiURL}/item/${id}`);
@@ -41,11 +42,15 @@ export const App = () => {
       <h2>All things 🔥</h2>
 
       {showForm ? (
-        <AddItemForm
+        <AddEditForm
           onAdd={onAdd}
           setOnAdd={setOnAdd}
           showForm={showForm}
           setShowForm={setShowForm}
+          onEdit={onEdit}
+          setOnEdit={setOnEdit}
+          product={selectedProduct}
+          setSelectedProduct={setSelectedProduct}
         />
       ) : selectedProduct ? (
         <ProductCard
@@ -53,10 +58,18 @@ export const App = () => {
           goBack={() => setSelectedProduct(null)}
           setOnDelete={setOnDelete}
           onDelete={onDelete}
+          showForm={showForm}
+          setShowForm={setShowForm}
         />
       ) : (
         <>
-          <Button variant="contained" color="primary" onClick={() => setShowForm(!showForm)}>Add Item</Button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => setShowForm(!showForm)}
+          >
+            Add Item
+          </Button>
           <ProductList
             products={products}
             onProductClick={handleProductClick}

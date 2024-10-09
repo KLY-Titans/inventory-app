@@ -22,6 +22,7 @@ export const App = () => {
   const [onAdd, setOnAdd] = useState(false);
   const [onEdit, setOnEdit] = useState(false);
   const [showForm, setShowForm] = useState(false);
+  const [query, setQuery] = useState("");
 
   const fetchProducts = async () => {
     try {
@@ -43,9 +44,15 @@ export const App = () => {
     setSelectedProduct(data);
   };
 
-  const handleSearch = async (q) => {
-    const res = await fetch(`${apiURL}/item/search?q=${q}`);
-    const data = await res.json();
+  const handleSearch = async () => {
+    try {
+      const res = await fetch(`${apiURL}/item/search?q=${query}`);
+      const data = await res.json();
+      setProducts(data);
+      setQuery("");
+    } catch (error) {
+      console.error("Error", error);
+    }
   };
 
   return (
@@ -56,28 +63,36 @@ export const App = () => {
             Titan Store
           </Typography>
 
+          {/* NEED TO FIX JUMPING SEARCH BAR WHEN SELECTING AN ITEM */}
           {/* search bar */}
-          <Box component="form" sx={{ display: "flex", width: "33%" }}>
+          <Box sx={{ display: "flex", width: "33%" }}>
             <TextField
               variant="outlined"
               style={{ backgroundColor: "#F8F8F8", borderRadius: "5px" }}
               placeholder="Search product..."
               size="small"
               fullWidth
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
             />
-            <Button variant="contained" color="success">Search</Button>
+            <Button
+              variant="contained"
+              color="success"
+              onClick={() => handleSearch()}
+            >
+              Search
+            </Button>
           </Box>
 
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => setShowForm(!showForm)}
-          >
-            Add Item
-          </Button>
-          {/* <Typography variant="h6" color="inherit" component="div">
-            All things 🔥
-          </Typography> */}
+          {!selectedProduct && (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => setShowForm(!showForm)}
+            >
+              Add Item
+            </Button>
+          )}
         </Toolbar>
       </AppBar>
       <main>

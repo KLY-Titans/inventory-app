@@ -1,15 +1,27 @@
 import React from "react";
 
-import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
-import CardMedia from "@mui/material/CardMedia";
-import CardContent from "@mui/material/CardContent";
-import Typography from "@mui/material/Typography";
-import Stack from "@mui/material/Stack";
+import {
+  Card,
+  CardHeader,
+  CardMedia,
+  CardContent,
+  Typography,
+  Stack,
+  Button,
+  Grid2,
+} from "@mui/material";
 
 import apiURL from "../api";
 
-const ProductCard = ({ product, onClick, goBack, setOnDelete, onDelete }) => {
+const ProductCard = ({
+  product,
+  onClick,
+  goBack,
+  setOnDelete,
+  onDelete,
+  setShowForm,
+  showForm,
+}) => {
   const deleteHandler = async (id) => {
     try {
       const res = await fetch(`${apiURL}/item/${id}`, {
@@ -27,24 +39,9 @@ const ProductCard = ({ product, onClick, goBack, setOnDelete, onDelete }) => {
   };
 
   return (
-    <Card
-      variant="outlined"
-      sx={{ maxWidth: 345, borderRadius: 4 }}
-      onClick={onClick}
-    >
+    <Card variant="outlined" sx={{ maxWidth: 345, borderRadius: 4 }}>
       <CardHeader
-        title={
-          <Typography
-            variant="h6"
-            sx={{
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              maxHeight: "3em",
-            }}
-          >
-            {product.name}
-          </Typography>
-        }
+        title={<Typography variant="h6">{product.name}</Typography>}
         subheader={product.category}
       />
       <CardMedia
@@ -54,27 +51,58 @@ const ProductCard = ({ product, onClick, goBack, setOnDelete, onDelete }) => {
         sx={{ objectFit: "contain" }}
       />
       <CardContent>
-        <Typography
-          sx={{
-            marginBottom: 2,
-            maxHeight: "4.5em",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-          }}
-          variant="body1"
-        >
+        <Typography gutterBottom noWrap={goBack ? false : true} variant="body1">
           {product.description}
         </Typography>
         <Typography sx={{ marginBottom: 2 }} variant="h6">
-          ${product.price}
+          ${parseFloat(product.price).toFixed(2)}
         </Typography>
-      </CardContent>{" "}
-      {goBack && (
+      </CardContent>
+
+      {!goBack ? (
+        <Grid2
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          size="grow"
+        >
+          <Button
+            variant="contained"
+            sx={{ marginBottom: "2em" }}
+            onClick={() => onClick()}
+          >
+            Details
+          </Button>
+        </Grid2>
+      ) : (
         <>
-          <Stack spacing={2} direction="row">
-            <button onClick={() => deleteHandler(product.id)}>DELETE</button>
-            <button>EDIT</button>
-            <button onClick={goBack}>Go Back</button>
+          <Stack
+            spacing={{ xs: 1, sm: 2 }}
+            direction="row"
+            useFlexGap
+            sx={{
+              justifyContent: "center",
+              alignItems: "center",
+              marginBottom: "2em",
+            }}
+          >
+            <Button
+              variant="contained"
+              color="error"
+              onClick={() => deleteHandler(product.id)}
+            >
+              DELETE
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => setShowForm(!showForm)}
+            >
+              EDIT
+            </Button>
+            <Button variant="outlined" color="error" onClick={() => goBack()}>
+              Go Back
+            </Button>
           </Stack>
         </>
       )}

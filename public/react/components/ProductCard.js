@@ -29,14 +29,40 @@ const ProductCard = ({ product, onClick, goBack, setOnDelete, onDelete }) => {
   return (
     <Card
       variant="outlined"
-      sx={{ border: "solid 1px red", width: 400, cursor: "pointer" }}
+      sx={{ maxWidth: 345, borderRadius: 4 }}
       onClick={onClick}
     >
-      <CardHeader title={product.name} subheader={product.category} />
-      {/* image needs uniform sizing */}
-      <CardMedia component="img" src={product.image} />
+      <CardHeader
+        title={
+          <Typography
+            variant="h6"
+            sx={{
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              maxHeight: "3em",
+            }}
+          >
+            {product.name}
+          </Typography>
+        }
+        subheader={product.category}
+      />
+      <CardMedia
+        component="img"
+        height="300"
+        image={product.image}
+        sx={{ objectFit: "contain" }}
+      />
       <CardContent>
-        <Typography sx={{ marginBottom: 2 }} variant="body1">
+        <Typography
+          sx={{
+            marginBottom: 2,
+            maxHeight: "4.5em",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+          }}
+          variant="body1"
+        >
           {product.description}
         </Typography>
         <Typography sx={{ marginBottom: 2 }} variant="h6">

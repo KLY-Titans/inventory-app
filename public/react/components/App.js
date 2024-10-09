@@ -4,13 +4,16 @@ import React, { useState, useEffect } from "react";
 import apiURL from "../api";
 import ProductCard from "./ProductCard";
 import ProductList from "./ProductList";
-import { AddItemForm } from "./AddItemForm";
+import AddItemForm from "./AddItemForm";
+
+import { Button } from "@mui/material";
 
 export const App = () => {
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [onDelete, setOnDelete] = useState(false);
   const [onAdd, setOnAdd] = useState(false);
+  const [showForm, setShowForm] = useState(false);
 
   const fetchProducts = async () => {
     try {
@@ -36,8 +39,15 @@ export const App = () => {
     <main>
       <h1>Titan Store</h1>
       <h2>All things 🔥</h2>
-      <AddItemForm onAdd={onAdd} setOnAdd={setOnAdd} />
-      {selectedProduct ? (
+
+      {showForm ? (
+        <AddItemForm
+          onAdd={onAdd}
+          setOnAdd={setOnAdd}
+          showForm={showForm}
+          setShowForm={setShowForm}
+        />
+      ) : selectedProduct ? (
         <ProductCard
           product={selectedProduct}
           goBack={() => setSelectedProduct(null)}
@@ -45,7 +55,13 @@ export const App = () => {
           onDelete={onDelete}
         />
       ) : (
-        <ProductList products={products} onProductClick={handleProductClick} />
+        <>
+          <Button variant="contained" color="primary" onClick={() => setShowForm(!showForm)}>Add Item</Button>
+          <ProductList
+            products={products}
+            onProductClick={handleProductClick}
+          />
+        </>
       )}
     </main>
   );

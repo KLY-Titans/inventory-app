@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 import apiURL from "../api";
-import { Box, Typography, Button, TextField, Container } from "@mui/material";
+import { Box, Typography, Button, TextField } from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material";
 
+const theme = createTheme({
+    palette:{
+        mode: "light"
+    }
+})
 export const AddItemForm = () => {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
@@ -17,8 +23,8 @@ export const AddItemForm = () => {
       price,
       description,
       category,
-      image,
-    };
+      image
+    }
 
     try {
       const response = await fetch(`${apiURL}/item/`, {
@@ -30,6 +36,11 @@ export const AddItemForm = () => {
       });
       if (response.ok) {
         console.log("Item added successfully");
+        setName("")
+        setPrice("")
+        setDescription("")
+        setCategory("")
+        setImage("")
       } else {
         console.log("Failed to add item");
       }
@@ -41,16 +52,17 @@ export const AddItemForm = () => {
   return (
     <Box
       component="form"
-    //   sx={{
-    //     display: "flex",
-    //     flexDirection: "column",
-    //     maxWidth: 400,
-    //     margin: "auto",
-    //     padding: 3,
-    //     border: "1px solid black",
-    //     borderRadius: 2,
-    //     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-    //   }}
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        maxWidth: 400,
+        margin: "auto",
+        marginBottom: 3,
+        padding: 3,
+        border: "1px solid black",
+        borderRadius: 2,
+        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+      }}
       onSubmit={handleSubmit}
     >
       <Typography variant="h5" component="h2" align="center" marginBottom={2}>
@@ -58,17 +70,19 @@ export const AddItemForm = () => {
       </Typography>
 
       <TextField
+        id="productName"
         label="Product name"
-        variant="outlined"
-        defaultValue={name}
+        variant="filled"
+        value={name}
         onChange={(e) => setName(e.target.value)}
         margin="normal"
         fullWidth
         required
       />
       <TextField
+        id="price"
         label="Price"
-        variant="outlined"
+        variant="filled"
         value={price}
         onChange={(e) => setPrice(e.target.value)}
         margin="normal"
@@ -77,8 +91,9 @@ export const AddItemForm = () => {
         required
       />
       <TextField
+        id="description"
         label="Description"
-        variant="outlined"
+        variant="filled"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
         margin="normal"
@@ -88,17 +103,19 @@ export const AddItemForm = () => {
         required
       />
       <TextField
+        id="category"
         label="Category"
-        variant="outlined"
+        variant="filled"
         value={category}
-        onChange={(e) => setCategory(e.target.value)}
+        onChange={e => setCategory(e.target.value)}
         margin="normal"
         fullWidth
         required
       />
       <TextField
+        id="image"
         label="Image URL"
-        variant="outlined"
+        variant="filled"
         value={image}
         onChange={(e) => setImage(e.target.value)}
         margin="normal"

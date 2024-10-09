@@ -6,7 +6,7 @@ import ProductCard from "./ProductCard";
 import ProductList from "./ProductList";
 import AddEditForm from "./AddEditForm";
 
-import { Button } from "@mui/material";
+import { AppBar, Button, Toolbar, Typography, Box, TextField } from "@mui/material";
 
 export const App = () => {
   const [products, setProducts] = useState([]);
@@ -37,9 +37,26 @@ export const App = () => {
   };
 
   return (
+	<>
+      <AppBar position="static" sx={{marginBottom: 6}}>
+        <Toolbar sx={{justifyContent: "space-between"}}>
+          <Typography variant="h6" component="div">
+            Titan Store
+          </Typography>
+          <Box sx={{width: '20%'}}>
+            <TextField variant="outlined" style={{backgroundColor:"#F8F8F8", borderRadius:"5px"}}
+              placeholder="Search product..."
+              size="small"
+              fullWidth
+            />
+          </Box>
+          <Button variant="contained" color="primary" onClick={() => setShowForm(!showForm)}>Add Item</Button>
+		  <Typography variant="h6" color="inherit" component="div">
+		  	All things 🔥
+          </Typography>
+        </Toolbar>
+      </AppBar>
     <main>
-      <h1>Titan Store</h1>
-      <h2>All things 🔥</h2>
 
       {showForm ? (
         <AddEditForm
@@ -63,13 +80,7 @@ export const App = () => {
         />
       ) : (
         <>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => setShowForm(!showForm)}
-          >
-            Add Item
-          </Button>
+
           <ProductList
             products={products}
             onProductClick={handleProductClick}
@@ -77,5 +88,6 @@ export const App = () => {
         </>
       )}
     </main>
+	</>
   );
 };

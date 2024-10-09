@@ -1,17 +1,8 @@
 import React, { useState } from "react";
 import apiURL from "../api";
 import { Box, Typography, Button, TextField } from "@mui/material";
-import { createTheme, ThemeProvider } from "@mui/material";
 
-
-const theme = createTheme({
-    palette:{
-        mode: "light"
-    }
-})
-
-export const AddItemForm = ({ onAdd, setOnAdd }) => {
-
+const AddItemForm = ({ onAdd, setOnAdd, setShowForm, showForm }) => {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
@@ -29,7 +20,6 @@ export const AddItemForm = ({ onAdd, setOnAdd }) => {
       image,
     };
 
-
     try {
       const response = await fetch(`${apiURL}/item/`, {
         method: "POST",
@@ -45,8 +35,8 @@ export const AddItemForm = ({ onAdd, setOnAdd }) => {
         setCategory("");
         setImage("");
         setOnAdd(!onAdd);
+        setShowForm(!showForm);
         console.log("Item added successfully");
-
       } else {
         console.log("Failed to add item");
       }
@@ -56,7 +46,6 @@ export const AddItemForm = ({ onAdd, setOnAdd }) => {
   };
 
   return (
-
     <Box
       component="form"
       sx={{
@@ -114,7 +103,7 @@ export const AddItemForm = ({ onAdd, setOnAdd }) => {
         label="Category"
         variant="filled"
         value={category}
-        onChange={e => setCategory(e.target.value)}
+        onChange={(e) => setCategory(e.target.value)}
         margin="normal"
         fullWidth
         required
@@ -130,11 +119,24 @@ export const AddItemForm = ({ onAdd, setOnAdd }) => {
         type="url"
         required
       />
-      <Button variant="contained" color="primary" type="submit">
+      <Button
+        variant="contained"
+        color="primary"
+        type="submit"
+        sx={{ marginBottom: "0.5em" }}
+      >
         Add Item
       </Button>
+      <Button
+        variant="outlined"
+        color="error"
+        type="button"
+        onClick={() => setShowForm(!showForm)}
+      >
+        Go Back
+      </Button>
     </Box>
-    
-
   );
 };
+
+export default AddItemForm;

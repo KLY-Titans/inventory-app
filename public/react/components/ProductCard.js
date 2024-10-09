@@ -8,6 +8,7 @@ import {
   Typography,
   Stack,
   Button,
+  Grid2,
 } from "@mui/material";
 
 import apiURL from "../api";
@@ -38,11 +39,7 @@ const ProductCard = ({
   };
 
   return (
-    <Card
-      variant="outlined"
-      sx={{ maxWidth: 345, borderRadius: 4 }}
-      onClick={onClick}
-    >
+    <Card variant="outlined" sx={{ maxWidth: 345, borderRadius: 4 }}>
       <CardHeader
         title={<Typography variant="h6">{product.name}</Typography>}
         subheader={product.category}
@@ -60,14 +57,34 @@ const ProductCard = ({
         <Typography sx={{ marginBottom: 2 }} variant="h6">
           ${parseFloat(product.price).toFixed(2)}
         </Typography>
-      </CardContent>{" "}
-      {goBack && (
+      </CardContent>
+
+      {!goBack ? (
+        <Grid2
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          size="grow"
+        >
+          <Button
+            variant="contained"
+            sx={{ marginBottom: "2em" }}
+            onClick={() => onClick()}
+          >
+            Details
+          </Button>
+        </Grid2>
+      ) : (
         <>
           <Stack
             spacing={{ xs: 1, sm: 2 }}
             direction="row"
             useFlexGap
-            sx={{ justifyContent: "center", alignItems: "center" }}
+            sx={{
+              justifyContent: "center",
+              alignItems: "center",
+              marginBottom: "2em",
+            }}
           >
             <Button
               variant="contained"

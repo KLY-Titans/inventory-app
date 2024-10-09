@@ -6,7 +6,14 @@ import ProductCard from "./ProductCard";
 import ProductList from "./ProductList";
 import AddEditForm from "./AddEditForm";
 
-import { AppBar, Button, Toolbar, Typography, Box, TextField } from "@mui/material";
+import {
+  AppBar,
+  Button,
+  Toolbar,
+  Typography,
+  Box,
+  TextField,
+} from "@mui/material";
 
 export const App = () => {
   const [products, setProducts] = useState([]);
@@ -36,58 +43,81 @@ export const App = () => {
     setSelectedProduct(data);
   };
 
+  const handleSearch = async (q) => {
+    const res = await fetch(`${apiURL}/item/search?q=${q}`);
+    const data = await res.json();
+  };
+
   return (
-	<>
-      <AppBar position="static" sx={{marginBottom: 6}}>
-        <Toolbar sx={{justifyContent: "space-between"}}>
+    <>
+      <AppBar position="static" sx={{ marginBottom: 6 }}>
+        <Toolbar sx={{ justifyContent: "space-between" }}>
           <Typography variant="h6" component="div">
             Titan Store
           </Typography>
-          <Box sx={{width: '20%'}}>
-            <TextField variant="outlined" style={{backgroundColor:"#F8F8F8", borderRadius:"5px"}}
+
+          {/* search bar */}
+          <Box component="form" sx={{ display: "flex", width: "33%" }}>
+            <TextField
+              variant="outlined"
+              style={{ backgroundColor: "#F8F8F8", borderRadius: "5px" }}
               placeholder="Search product..."
               size="small"
               fullWidth
             />
+            <Button variant="contained" color="success">Search</Button>
           </Box>
-          <Button variant="contained" color="primary" onClick={() => setShowForm(!showForm)}>Add Item</Button>
-		  <Typography variant="h6" color="inherit" component="div">
-		  	All things 🔥
-          </Typography>
+
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => setShowForm(!showForm)}
+          >
+            Add Item
+          </Button>
+          {/* <Typography variant="h6" color="inherit" component="div">
+            All things 🔥
+          </Typography> */}
         </Toolbar>
       </AppBar>
-    <main>
-
-      {showForm ? (
-        <AddEditForm
-          onAdd={onAdd}
-          setOnAdd={setOnAdd}
-          showForm={showForm}
-          setShowForm={setShowForm}
-          onEdit={onEdit}
-          setOnEdit={setOnEdit}
-          product={selectedProduct}
-          setSelectedProduct={setSelectedProduct}
-        />
-      ) : selectedProduct ? (
-        <ProductCard
-          product={selectedProduct}
-          goBack={() => setSelectedProduct(null)}
-          setOnDelete={setOnDelete}
-          onDelete={onDelete}
-          showForm={showForm}
-          setShowForm={setShowForm}
-        />
-      ) : (
-        <>
-          
-          <ProductList
-            products={products}
-            onProductClick={handleProductClick}
+      <main>
+        {showForm ? (
+          <AddEditForm
+            onAdd={onAdd}
+            setOnAdd={setOnAdd}
+            showForm={showForm}
+            setShowForm={setShowForm}
+            onEdit={onEdit}
+            setOnEdit={setOnEdit}
+            product={selectedProduct}
+            setSelectedProduct={setSelectedProduct}
           />
-        </>
-      )}
-    </main>
-	</>
+        ) : selectedProduct ? (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <ProductCard
+              product={selectedProduct}
+              goBack={() => setSelectedProduct(null)}
+              setOnDelete={setOnDelete}
+              onDelete={onDelete}
+              showForm={showForm}
+              setShowForm={setShowForm}
+            />
+          </Box>
+        ) : (
+          <>
+            <ProductList
+              products={products}
+              onProductClick={handleProductClick}
+            />
+          </>
+        )}
+      </main>
+    </>
   );
 };

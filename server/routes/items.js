@@ -2,6 +2,30 @@ const express = require("express");
 const router = express.Router();
 const { Item } = require("../models");
 const { check, matchedData, validationResult } = require("express-validator");
+const {Op} = require("sequelize");
+
+// GET api/item/search?q=
+router.get("/search", async (req, res) => {
+	const searchQuery = req.query.q;
+	if (!searchQuery) {
+		return res.status(400).json({ error: "Search query is required" });
+	}
+	try {
+		const items = await Item.findAll({
+			where: {
+				[Op.or]: [
+					{ name: { [Op.like]: `%${searchQuery}%` } },
+					{ description: { [Op.like]: `%${searchQuery}%` } },
+				],
+			},
+		});
+		res.json(items);
+
+	} catch (error) {
+		console.error("Error fetching items:", error);
+		res.status(500).json({ error: "Internal server error" });
+	}
+});
 
 // GET /item/ all items
 router.get("/", async (req, res, next) => {

@@ -3,12 +3,15 @@ import apiURL from "../api";
 import { Box, Typography, Button, TextField } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material";
 
+
 const theme = createTheme({
     palette:{
         mode: "light"
     }
 })
-export const AddItemForm = () => {
+
+export const AddItemForm = ({ onAdd, setOnAdd }) => {
+
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
@@ -23,8 +26,9 @@ export const AddItemForm = () => {
       price,
       description,
       category,
-      image
-    }
+      image,
+    };
+
 
     try {
       const response = await fetch(`${apiURL}/item/`, {
@@ -35,12 +39,14 @@ export const AddItemForm = () => {
         body: JSON.stringify(newItem),
       });
       if (response.ok) {
+        setName("");
+        setPrice("");
+        setDescription("");
+        setCategory("");
+        setImage("");
+        setOnAdd(!onAdd);
         console.log("Item added successfully");
-        setName("")
-        setPrice("")
-        setDescription("")
-        setCategory("")
-        setImage("")
+
       } else {
         console.log("Failed to add item");
       }
@@ -50,6 +56,7 @@ export const AddItemForm = () => {
   };
 
   return (
+
     <Box
       component="form"
       sx={{
@@ -128,5 +135,6 @@ export const AddItemForm = () => {
       </Button>
     </Box>
     
+
   );
 };

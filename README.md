@@ -10,8 +10,8 @@ This is a simple shop application where users can view a variety of items and th
 
 To get the app up and running, follow these steps:
 
-1. Clone the repository to you local machine.
-2. Navigate to the root directory of the projects
+1. Clone the repository to your local machine.
+2. Navigate to the root directory of the project.
 
 ### Backend Setup
 

@@ -1,19 +1,19 @@
-#KLY TITANS presents: Titan Store
+# KLY TITANS presents: Titan Store
 
-##Description:
+## Description:
 
 This is a simple shop application where users can view a variety of items and their prices. The app provide a clean interface for browsing items and displays detailed information about each item. Users can search for items using a search bar that queries the name and desciption of products.
 
-##You can find us @ [CLICK HERE](https://inventory-app-kp4e.onrender.com)
+# You can find us @ [CLICK HERE](https://inventory-app-kp4e.onrender.com)
 
-#Installation Instructions 
+# Installation Instructions 
 
 To get the app up and running, follow these steps:
 
 1. Clone the repository to you local machine.
 2. Navigate to the root directory of the projects
 
-#Backend Setup
+# Backend Setup
 
 1. Install the dependencies:
 `npm install`
@@ -25,7 +25,7 @@ To get the app up and running, follow these steps:
 `npm run client-dev`
 
 
-##Our Collaborators:
+## Our Collaborators:
 
 1. Kenny Yang
 2. Luis Gonzalez

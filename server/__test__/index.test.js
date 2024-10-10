@@ -1,14 +1,15 @@
 const request = require("supertest");
 const express = require("express");
-const { Item } = require("../server/models");
-const itemRoutes = require("../server/routes/index");
+const { Item } = require("../models");
+
 
 
 const app = express();
 app.use(express.json());
-app.use("/item", itemRoutes);
+app.use("/item", require("../routes/items"));
 
-jest.mock("../server/models", () => ({
+
+jest.mock("../models", () => ({
 	Item: {
 		findAll: jest.fn(),
 		findByPk: jest.fn(),
@@ -41,7 +42,8 @@ describe("Item API routes", () => {
 		// Mocking findAll to return mockItems
 		Item.findAll.mockResolvedValue(mockItems);
 
-		const response = await request(app).get("http://localhost:3000/api/item/");
+		const response = await request(app).get("/item/");
+		// console.log("this is response", response);
 		expect(response.status).toBe(200);
 		expect(response.body).toEqual(mockItems);
 	});
@@ -59,7 +61,7 @@ describe("Item API routes", () => {
 		// Mocking findByPk to return mockItem
 		Item.findByPk.mockResolvedValue(mockItem);
 
-		const response = await request(app).get("/api/item/1");
+		const response = await request(app).get("/item/1");
 		expect(response.status).toBe(200);
 		expect(response.body).toEqual(mockItem);
 	});
@@ -77,7 +79,7 @@ describe("Item API routes", () => {
 		// Mocking create to return newItem
 		Item.create.mockResolvedValue(newItem);
 
-		const response = await request(app).post("/api/item/").send(newItem);
+		const response = await request(app).post("/item/").send(newItem);
 		expect(response.status).toBe(200);
 		expect(response.body).toEqual(newItem);
 	});
@@ -93,10 +95,12 @@ describe("Item API routes", () => {
 		};
 
 		// Mocking findByPk and destroy
-		Item.findByPk.mockResolvedValue(mockItem);
+		const item = Item.findByPk.mockResolvedValue(mockItem);
 		Item.destroy.mockResolvedValue(1); // Mocking destroy to return 1 (indicating one row affected)
 
-		const response = await request(app).delete("/api/item/1");
+		const response = await request(app).delete("/item/1");
+		// const response = await request(app).get("/item/1");
+		console.log(response)
 		expect(response.status).toBe(200);
 	});
 
@@ -112,7 +116,7 @@ describe("Item API routes", () => {
 		// Mocking findByPk and update
 		Item.findByPk.mockResolvedValue(mockItem);
 
-		const response = await request(app).put("/api/item/1").send(updatedData);
+		const response = await request(app).put("/item/1").send(updatedData);
 		expect(response.status).toBe(200);
 		expect(response.body).toEqual(updatedData);
 	});

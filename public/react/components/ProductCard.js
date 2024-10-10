@@ -54,7 +54,7 @@ const ProductCard = ({
         <Typography gutterBottom noWrap={goBack ? false : true} variant="body1">
           {product.description}
         </Typography>
-        <Typography sx={{ marginBottom: 2 }} variant="h6">
+        <Typography sx={{ marginBottom: 0.5 }} variant="h6">
           ${parseFloat(product.price).toFixed(2)}
         </Typography>
       </CardContent>

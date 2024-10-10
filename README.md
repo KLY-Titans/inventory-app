@@ -2,7 +2,7 @@
 
 ## Description:
 
-This is a simple shop application where users can view a variety of items and their prices. The app provide a clean interface for browsing items and displays detailed information about each item. Users can search for items using a search bar that queries the name and desciption of products.
+This is a simple shop application where users can view a variety of items and their prices. The app provide a clean interface for browsing items and displays detailed information about each item. Users can search for items using a search bar that queries the name and description of products.
 
 ### You can find us @ [CLICK HERE](https://inventory-app-kp4e.onrender.com)
 
@@ -19,7 +19,7 @@ To get the app up and running, follow these steps:
 `npm install`
 2. Seed the database:
 `npm run seed` 
-3. Start the backend serve:
+3. Start the backend server:
 `npm run server-dev`
 4. In a separate terminal, start the frontend client:
 `npm run client-dev`

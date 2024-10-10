@@ -39,9 +39,13 @@ export const App = () => {
   }, [onDelete, onAdd, onEdit]);
 
   const handleProductClick = async (id) => {
-    const res = await fetch(`${apiURL}/item/${id}`);
-    const data = await res.json();
-    setSelectedProduct(data);
+    try {
+      const res = await fetch(`${apiURL}/item/${id}`);
+      const data = await res.json();
+      setSelectedProduct(data);
+    } catch (error) {
+      console.error("Error", error);
+    }
   };
 
   const handleSearch = async () => {
@@ -57,18 +61,30 @@ export const App = () => {
 
   return (
     <>
-      <AppBar position="static" sx={{ marginBottom: 6 }}>
+      <AppBar
+        position="static"
+        sx={{ marginBottom: 6, backgroundColor: "#3f51b5" }}
+      >
         <Toolbar sx={{ justifyContent: "space-between" }}>
-          <Typography variant="h6" component="div">
-            Titan Store
-          </Typography>
+          <Box onClick={() => fetchProducts()} sx={{ cursor: "pointer" }}>
+            <Typography variant="h4">Titan Store</Typography>
+          </Box>
 
-          {/* NEED TO FIX JUMPING SEARCH BAR WHEN SELECTING AN ITEM */}
           {/* search bar */}
-          <Box sx={{ display: "flex", width: "33%" }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "33%",
+            }}
+          >
             <TextField
               variant="outlined"
-              style={{ backgroundColor: "#F8F8F8", borderRadius: "5px" }}
+              style={{
+                backgroundColor: "#F8F8F8",
+                borderRadius: "5px",
+              }}
               placeholder="Search product..."
               size="small"
               fullWidth
@@ -76,15 +92,16 @@ export const App = () => {
               onChange={(e) => setQuery(e.target.value)}
             />
             <Button
-              variant="contained"
-              color="success"
+              variant="outlined"
+              color="white"
               onClick={() => handleSearch()}
+              sx={{ marginLeft: 1 }}
             >
               Search
             </Button>
           </Box>
 
-          {!selectedProduct && (
+          <Box sx={{ visibility: selectedProduct ? "hidden" : "visible" }}>
             <Button
               variant="contained"
               color="primary"
@@ -92,7 +109,7 @@ export const App = () => {
             >
               Add Item
             </Button>
-          )}
+          </Box>
         </Toolbar>
       </AppBar>
       <main>

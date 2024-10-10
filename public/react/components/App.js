@@ -101,7 +101,15 @@ export const App = () => {
             </Button>
           </Box>
 
-          <Box sx={{ visibility: selectedProduct ? "hidden" : "visible" }}>
+          <Box
+            sx={{
+              visibility: selectedProduct
+                ? "hidden"
+                : showForm
+                ? "hidden"
+                : "visible",
+            }}
+          >
             <Button
               variant="contained"
               color="primary"
